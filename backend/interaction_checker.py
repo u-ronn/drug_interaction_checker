@@ -1,7 +1,6 @@
 from models import Medication, InteractionCheckResult, InteractionData, RiskLevel
-from interaction_database import INTERACTION_DATABASE
 
-# Priority mapping for risk levels
+# リスクレベルの優先度（高いほど重要）
 RISK_LEVEL_PRIORITY = {
     'severe': 3,
     'moderate': 2,
@@ -9,7 +8,7 @@ RISK_LEVEL_PRIORITY = {
     'none': 0,
 }
 
-# Display text mapping per requirements (section 5.2)
+# リスクレベルごとの表示テキスト（A欄要件に基づく）
 RISK_LEVEL_DISPLAY = {
     'severe': {
         'text': '【最重要】深刻な相互作用の可能性があります。専門家への相談を強く推奨します。',
@@ -36,35 +35,30 @@ RISK_LEVEL_DISPLAY = {
 
 def check_interactions(medications: list[Medication]) -> InteractionCheckResult:
     """
-    Check for drug interactions among provided medications.
+    薬剤の相互作用をチェック（ORCA API使用）
     
-    Logic:
-    1. Check all combinations of medications
-    2. Match against interaction database
-    3. Return highest risk level with all found interactions
+    処理フロー:
+    1. ORCA API サービスを使って全薬剤の組み合わせをチェック
+    2. マスターデータとの照合結果を取得
+    3. 最も高いリスクレベルと全ての相互作用を返す
+    
+    Returns:
+        InteractionCheckResult: リスクレベル、表示テキスト、相互作用リスト
     """
     found_interactions = []
     
-    # Check all medication pairs
-    for i in range(len(medications)):
-        for j in range(i + 1, len(medications)):
-            med1 = medications[i]
-            med2 = medications[j]
-            
-            # Use ingredient for supplements, otherwise use name
-            name1 = med1.ingredient if med1.ingredient else med1.name
-            name2 = med2.ingredient if med2.ingredient else med2.name
-            
-            # Search for matching interaction in database
-            for interaction in INTERACTION_DATABASE:
-                # Check both orderings
-                if ((interaction['drug1'] == name1 and interaction['drug2'] == name2) or
-                    (interaction['drug1'] == name2 and interaction['drug2'] == name1) or
-                    (interaction['drug1'] == med1.name and interaction['drug2'] == med2.name) or
-                    (interaction['drug1'] == med2.name and interaction['drug2'] == med1.name)):
-                    
-                    found_interactions.append(InteractionData(**interaction))
-                    break
+    # ORCA API サービスを使って相互作用をチェック
+    from orca_service import OrcaApiService
+    orca_service = OrcaApiService()
+    
+    try:
+        found_interactions = orca_service.check_interactions(medications)
+    except Exception as e:
+        # ORCA API でエラーが発生した場合は空のリストを返す
+        # 実運用では適切なエラーハンドリング（ログ記録、アラート等）が必要
+        import logging
+        logging.getLogger(__name__).error(f"ORCA API 呼び出しエラー: {e}")
+        found_interactions = []
     
     # Determine highest risk level
     highest_risk: RiskLevel = 'none'

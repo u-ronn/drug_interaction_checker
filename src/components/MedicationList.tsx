@@ -30,10 +30,10 @@ export function MedicationList({ medications, onDelete }: MedicationListProps) {
             return (
               <div
                 key={med.id}
-                className="flex items-start sm:items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-gray-50 rounded-lg group hover:bg-gray-100 transition-colors"
+                className="flex items-start sm:items-center gap-2 sm:gap-3 p-2.5 sm:p-3 bg-gray-50 rounded-lg group hover:bg-gray-100 transition-colors"
               >
                 <Icon className="size-4 sm:size-5 text-gray-600 shrink-0 mt-0.5 sm:mt-0" />
-                
+
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-sm sm:text-base truncate">{med.name}</span>

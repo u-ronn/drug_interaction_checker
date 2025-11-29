@@ -39,12 +39,12 @@ export function InteractionResult({ result }: InteractionResultProps) {
     <div className="space-y-3 sm:space-y-4">
       {/* Risk Level Display (A) */}
       <Card className={`border-2 ${colorClass}`}>
-        <CardContent className="pt-4 sm:pt-6">
-          <div className="flex items-start gap-3 sm:gap-4">
-            <div className="text-3xl sm:text-4xl shrink-0">{result.icon}</div>
-            <div className="flex-1 space-y-2 sm:space-y-3 min-w-0">
+        <CardContent className="pt-3 sm:pt-5">
+          <div className="flex items-start gap-2.5 sm:gap-4">
+            <div className="text-2xl sm:text-3xl md:text-4xl shrink-0">{result.icon}</div>
+            <div className="flex-1 space-y-1.5 sm:space-y-2.5 min-w-0">
               <h2 className={`${textColor} text-sm sm:text-base leading-snug`}>{result.displayText}</h2>
-              
+
               {/* Disclaimer */}
               <Alert className="bg-white/50 border-gray-300">
                 <AlertDescription className="text-xs sm:text-sm">
@@ -61,7 +61,7 @@ export function InteractionResult({ result }: InteractionResultProps) {
       {/* Detailed Information (B) */}
       {result.interactions.length > 0 && (
         <Card>
-          <CardContent className="pt-4 sm:pt-6">
+          <CardContent className="pt-3 sm:pt-5">
             <Accordion type="multiple" className="w-full">
               {result.interactions.map((interaction, index) => (
                 <AccordionItem key={index} value={`item-${index}`}>

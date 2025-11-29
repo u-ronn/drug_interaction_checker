@@ -128,10 +128,10 @@ export function MedicationInput({
           薬・サプリメントの登録
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-0">
         <form
           onSubmit={handleSubmit}
-          className="space-y-3 sm:space-y-4"
+          className="space-y-2.5 sm:space-y-4 px-6"
         >
           {/* Type Selection */}
           <div className="space-y-2">
@@ -203,7 +203,7 @@ export function MedicationInput({
                     onClick={() =>
                       handleSelectSuggestion(suggestion)
                     }
-                    className="w-full text-left px-3 sm:px-4 py-2.5 hover:bg-blue-50 border-b last:border-b-0 transition-colors"
+                    className="w-full text-left px-3 sm:px-4 py-2 sm:py-2.5 hover:bg-blue-50 border-b last:border-b-0 transition-colors"
                   >
                     <div className="text-sm">
                       {suggestion.name}
